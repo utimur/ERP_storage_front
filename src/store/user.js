@@ -2,7 +2,7 @@ import {makeAutoObservable} from "mobx";
 
 // CТЭЙТ ДЛЯ ЮЗЕР ИНФОРМЕЙШН
 class User {
-    isAuth = true
+    isAuth = false
     constructor() {
         makeAutoObservable(this)
     }

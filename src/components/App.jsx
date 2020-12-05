@@ -4,16 +4,18 @@ import React from 'react';
 import {BrowserRouter} from "react-router-dom";
 import NavBar from "./NavBar";
 import AppRouter from "./AppRouter";
-
+import '../App.css'
 // ДЛЯ ГРАФИКИ ЮЗАЕМ MATERIAL UI REACT
 
 const App = () => {
-  return (
-      <BrowserRouter>
-          <NavBar/>
-          <AppRouter/>
-      </BrowserRouter>
-  );
+    return (
+        <div className="app">
+            <BrowserRouter>
+                <NavBar/>
+                <AppRouter/>
+            </BrowserRouter>
+        </div>
+    );
 };
 
 export default App;
