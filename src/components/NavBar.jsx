@@ -34,7 +34,6 @@ const NavBar = observer(() => {
                     }
                 </Container>
             </AppBar>
-    );
 });
 
 export default NavBar;

@@ -3,10 +3,11 @@ import {Switch, Route, Redirect} from 'react-router-dom'
 import {privateRoutes, publicRoutes} from "../routes";
 import user from "../store/user";
 import {routes} from "../utils/consts";
+import {Container} from "@material-ui/core";
 
 const AppRouter = () => {
     return (
-        <div>
+        <Container style={{height:'100%'}} maxWidth="lg">
             {!user.isAuth
                 ?
                 <Switch>
@@ -27,7 +28,7 @@ const AppRouter = () => {
                     <Redirect to={routes.MAIN_ROUTE}/>
                 </Switch>
             }
-        </div>
+        </Container>
     );
 };
 
