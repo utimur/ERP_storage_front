@@ -32,7 +32,6 @@ class Canban {
     }
 
     getOrdersByStatus(status) {
-        console.log(status)
         let currentOrderInArray = 0
         return this.orders.filter(order => {
             if (order.status === status) {
