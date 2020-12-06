@@ -6,15 +6,17 @@ import Grid from "@material-ui/core/Grid";
 import Order from "./Order";
 import {authHost} from "../../http/axios";
 import canban from "../../store/canban";
+import {observer} from "mobx-react-lite";
 
-const Board = ({board}) => {
-
+const Board = observer(({board}) => {
+    const orders = canban.getOrdersByStatus(board.status)
     useEffect(() => {
 
     })
 
     return (
-        <Card>
+        <Card onDragOver={e => {e.preventDefault()}}
+              onDrop={(e) => {e.preventDefault();canban.currentOrder.status = board.status; canban.currentOrder.order = orders.length;canban.setCurrentOrder(null)}}>
             <CardContent>
                 <Box width={200} height="70%">
                     <Grid container justify="center">
@@ -22,13 +24,13 @@ const Board = ({board}) => {
                             {board.title}
                         </Typography>
                     </Grid>
-                    {canban.orders.map(card =>
+                    {orders.map(card =>
                         <Order key={card.id} card={card}/>
                     )}
                 </Box>
             </CardContent>
         </Card>
     );
-};
+});
 
 export default Board;
