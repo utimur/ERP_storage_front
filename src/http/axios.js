@@ -1,10 +1,13 @@
 import axios from 'axios'
 
-const serverAddress = `URL СЕРВАКА`
+const serverAddress = `http://178.154.233.191`
 
 // ОТСЮДА ШЛЕМ ЗАПРОСЫ КОТОРЫЕ НЕ ТРЕБУЮТ АВТОРИЗАЦИИ
 const baseHost = axios.create({
-    baseURL: serverAddress
+    baseURL: serverAddress,
+    headers: {
+        "Access-Control-Allow-Origin": "*",
+    }
 })
 
 // C ЭТОГО ХОСТА ШЛЕМ ЗАПРОСЫ КОТОРЫЕ В КОТОРЫЕ ЗАСОВЫВАЕТСЯ ТОКЕН
@@ -19,4 +22,4 @@ let auth_interceptor = (config) => {
 
 authHost.interceptors.request.use(auth_interceptor);
 
-export {authHost, baseHost}
+export {authHost, baseHost, serverAddress}
