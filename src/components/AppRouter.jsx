@@ -4,8 +4,9 @@ import {privateRoutes, publicRoutes} from "../routes";
 import user from "../store/user";
 import {routes} from "../utils/consts";
 import {Container} from "@material-ui/core";
+import {observer} from "mobx-react-lite";
 
-const AppRouter = () => {
+const AppRouter = observer(() => {
     return (
         <Container style={{height:'100%'}} maxWidth="lg">
             {!user.isAuth
@@ -30,6 +31,6 @@ const AppRouter = () => {
             }
         </Container>
     );
-};
+});
 
 export default AppRouter;

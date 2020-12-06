@@ -3,8 +3,8 @@ import {Button, CardContent, CardHeader, Container, Grid, Typography} from "@mat
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
-import useInfo from "./useInfo";
-import {registration} from "./registrationLogic";
+import useInfo from "../../hooks/useInfo";
+import user from "../../store/user";
 
 const Registration = () => {
     const username = useInfo("", {isEmpty: false, minLength: 8})
@@ -29,7 +29,7 @@ const Registration = () => {
                     <Grid container justify="flex-end">
                         <Box mt={2}>
                             <Button  variant="outlined" color="primary" disabled={username.isValid || password.isValid}
-                                     onClick={() => registration(username.value, password.value)}
+                                     onClick={() => user.registration(username.value, password.value)}
                             >Регистрация</Button>
                         </Box>
                     </Grid>

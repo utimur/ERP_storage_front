@@ -31,15 +31,15 @@ const NavBar = observer(() => {
                 {!user.isAuth?
                     <Grid container={true} className={`${classes.flexEnd} ${classes.root}`}>
                         <NavLink to={routes.LOGIN_ROUTE} style = {{textDecoration: 'none'}}>
-                            <Button color={'inherit'}>Авторизация</Button>
+                            <Button className={classes.navlinkStyle} color={'inherit'}>Авторизация</Button>
                         </NavLink>
                         <NavLink to={routes.REGISTRATION_ROUTE} style = {{textDecoration: 'none'}}>
-                            <Button color={'inherit'}>Регистрация</Button>
+                            <Button className={classes.navlinkStyle} color={'inherit'}>Регистрация</Button>
                         </NavLink>
                     </Grid>
                     :
                     <Grid container={true} className={`${classes.flexEnd} ${classes.root}`}>
-                        <Button color={'inherit'}>Выйти</Button>
+                        <Button onClick={() => user.logout()} color={'inherit'}>Выйти</Button>
                     </Grid>
                 }
             </Container>
