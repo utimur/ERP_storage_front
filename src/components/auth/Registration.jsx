@@ -29,7 +29,7 @@ const Registration = () => {
                     <Grid container justify="flex-end">
                         <Box mt={2}>
                             <Button  variant="outlined" color="primary" disabled={username.isValid || password.isValid}
-                                     onClick={() => registration(username, password)}
+                                     onClick={() => registration(username.value, password.value)}
                             >Регистрация</Button>
                         </Box>
                     </Grid>
