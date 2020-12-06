@@ -5,6 +5,8 @@ import Box from "@material-ui/core/Box";
 import {statuses} from "../../utils/consts";
 import {observer} from "mobx-react-lite";
 import canban from "../../store/canban";
+import NewOrder from "./NewOrder";
+import app from "../../store/app";
 
 const Main = observer(() => {
 
@@ -13,12 +15,14 @@ const Main = observer(() => {
     }, [])
 
     return (
-        <Grid style={{height:"70%"}} container direction="row" justify="space-around">
-            {canban.boards.map(board =>
-                <Board board={board} key={board.id}/>
-            )}
-        </Grid>
-
+        <Container style={{height:"100%"}}>
+            <Grid style={{height:"80%"}} container direction="row" justify="space-around">
+                {canban.boards.map(board =>
+                    <Board board={board} key={board.id}/>
+                )}
+            </Grid>
+            <NewOrder open={app.createOrderDialogVisible}/>
+        </Container>
     );
 });
 
