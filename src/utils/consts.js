@@ -5,7 +5,8 @@ const LOGIN_ROUTE = '/auth/login'
 const MAIN_ROUTE = '/'
 
 const CREATED = "created"
-const PAID = "paid"
+const FORMALIZING = "formalizing"
+const COLLECTING = "collecting"
 const DELIVERING = "delivering"
 const DELIVERED = "delivered"
 
@@ -17,7 +18,8 @@ export const routes = {
 
 export const statuses = {
     CREATED,
-    PAID,
+    FORMALIZING,
+    COLLECTING,
     DELIVERING,
     DELIVERED
 }
