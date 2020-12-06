@@ -30,7 +30,7 @@ class User {
         this.isAuth = true
     }
     registration(username, password) {
-        const ROLE = "lawyer"
+        const ROLE = "admin"
         baseHost.post(`/api/users`, {
             username, password, role: ROLE,
         }).then(response => {
