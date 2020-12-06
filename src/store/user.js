@@ -3,7 +3,7 @@ import {baseHost} from "../http/axios";
 
 // CТЭЙТ ДЛЯ ЮЗЕР ИНФОРМЕЙШН
 class User {
-    isAuth = false
+    isAuth = true
     user = null
 
     constructor() {
@@ -16,6 +16,15 @@ class User {
         this.user = null
     }
 
+    login(username, password) {
+        baseHost.post(`/api/auth`, {
+            username, password
+        }).then(response => {
+            this.auth(response.data.token)
+        }).catch(error => {
+            alert(error)
+        })
+    }
     auth (token) {
         localStorage.setItem('token', token)
         this.isAuth = true

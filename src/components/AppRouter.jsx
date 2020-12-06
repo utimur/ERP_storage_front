@@ -8,7 +8,7 @@ import {observer} from "mobx-react-lite";
 
 const AppRouter = observer(() => {
     return (
-        <Container style={{height:'100%'}} maxWidth="lg">
+        <Container style={{height:'100%', paddingTop:50}} maxWidth="lg">
             {!user.isAuth
                 ?
                 <Switch>
