@@ -7,7 +7,7 @@ import useInfo from "./useInfo";
 import {registration} from "./registrationLogic";
 
 const Registration = () => {
-    const username = useInfo("", {isEmpty: false, minLength: 3})
+    const username = useInfo("", {isEmpty: false, minLength: 8})
     const password = useInfo("", {isEmpty: false, minLength: 8})
     return (
         <Grid style={{height:"100%"}} container  alignItems="center" justify="center">
