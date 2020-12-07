@@ -5,13 +5,14 @@ import Box from "@material-ui/core/Box";
 import {statuses} from "../../utils/consts";
 import {observer} from "mobx-react-lite";
 import canban from "../../store/canban";
+import Card from "@material-ui/core/Card";
 import NewOrder from "./NewOrder";
 import app from "../../store/app";
 
 const Main = observer(() => {
 
     useEffect(() => {
-        canban.fetchOrders()
+        //canban.fetchOrders()
     }, [])
 
     return (

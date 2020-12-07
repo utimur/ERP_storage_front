@@ -5,9 +5,6 @@ const serverAddress = `http://178.154.233.191`
 // ОТСЮДА ШЛЕМ ЗАПРОСЫ КОТОРЫЕ НЕ ТРЕБУЮТ АВТОРИЗАЦИИ
 const baseHost = axios.create({
     baseURL: serverAddress,
-    headers: {
-        "Access-Control-Allow-Origin": "*",
-    }
 })
 
 // C ЭТОГО ХОСТА ШЛЕМ ЗАПРОСЫ КОТОРЫЕ В КОТОРЫЕ ЗАСОВЫВАЕТСЯ ТОКЕН
