@@ -20,20 +20,20 @@ const Registration = () => {
             <Box mt={2}>
               <TextField
                 value={username.value} onChange={e => username.setValue(e.target.value)}
-                fullWidth label='Введите имя пользователя...' variant='outlined' error={username.isValid} helperText={username.error}
+                fullWidth label='Введите имя пользователя...' variant='outlined' error={!username.isValid && username.value !== ''} helperText={username.error}
               />
             </Box>
             <Box mt={2}>
               <TextField
                 value={password.value} onChange={e => password.setValue(e.target.value)} type='password'
-                fullWidth label='Введите пароль...' variant='outlined' error={password.isValid} helperText={password.error}
+                fullWidth label='Введите пароль...' variant='outlined' error={!password.isValid && password.value !== ''} helperText={password.error}
               />
             </Box>
           </Box>
           <Grid container justify='flex-end'>
             <Box mt={2}>
               <Button
-                variant='outlined' color='primary' disabled={username.isValid || password.isValid}
+                variant='outlined' color='primary' disabled={!username.isValid || !password.isValid}
                 onClick={() => user.registration(username.value, password.value)}
               >Регистрация
               </Button>
