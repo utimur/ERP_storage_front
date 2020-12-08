@@ -4,40 +4,26 @@ const IS_EMPTY = 'isEmpty'
 const MIN_LENGTH = 'minLength'
 
 function useValidation (value, validations) {
-  const [isEmpty, setIsEmpty] = useState(false)
-  const [isMinLengthCorrect, setIsMinLengthCorrect] = useState(false)
-  const [error, setError] = useState('')
-  const errors = {
-    [IS_EMPTY]: 'Поле не должно быть пустым!',
-    [MIN_LENGTH]: `Минимальная длина поля - ${validations[MIN_LENGTH]} символов!`
+  const [error, setError] = useState(null)
+
+  const validationStrategies = {
+    [IS_EMPTY]: () => !value ? 'Поле не должно быть пустым!' : null,
+    [MIN_LENGTH]: () => value.length < validations[MIN_LENGTH] ? (
+      `Минимальная длина поля - ${validations[MIN_LENGTH]} символов!`
+    ) : null
   }
 
   useEffect(() => {
-    setError('')
-    circleExit: for (const validation in validations) {
-      switch (validation) {
-        case IS_EMPTY : {
-          if (!value) {
-            setIsEmpty(true)
-            setError(errors[validation])
-            break circleExit
-          }
-          setIsEmpty(false)
-          break
-        }
-        case MIN_LENGTH: {
-          if (value.length < validations[validation]) {
-            setIsMinLengthCorrect(true)
-            setError(errors[validation])
-            break
-          }
-          setIsMinLengthCorrect(false)
-          break
-        }
+    for (const stratKey in validationStrategies) {
+      const err = validationStrategies[stratKey]()
+      if (err !== null) {
+        setError(err)
+        return
       }
     }
+    setError(null)
   }, [value])
-  return { isValid: isEmpty || isMinLengthCorrect, error }
+  return { isValid: error === null, error }
 }
 
 export default useValidation
