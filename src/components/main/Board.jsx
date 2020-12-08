@@ -9,16 +9,43 @@ import { observer } from 'mobx-react-lite'
 import app from '../../store/app'
 import { statuses } from '../../utils/consts'
 
+const statusOrder = {
+  [statuses.CREATED]: 0,
+  [statuses.FORMALIZING]: 1,
+  [statuses.COLLECTING] : 2,
+  [statuses.DELIVERING]: 3,
+  [statuses.DELIVERED]: 4,
+}
+
 const Board = observer(({ board }) => {
   const orders = canban.getOrdersByStatus(board.status)
+
+  const isMoved = (orderStatus, boardStatus) => {
+    const difference = statusOrder[canban.currentOrder.status] - statusOrder[board.status]
+    return difference === 1 || difference === -1;
+
+  }
+  const onDropEvent = (e) => {
+    e.preventDefault();
+    if (canban.currentOrder.status !== statuses.DELIVERED && isMoved(canban.currentOrder.status, board.status)) {
+        canban.currentOrder.status = board.status;
+        canban.currentOrder.order = orders.length;
+        canban.setCurrentOrder(null)
+    }
+  }
+
+  const onDragOverEvent = (e) => {
+    if (isMoved(canban.currentOrder.status, board.status))
+      e.preventDefault()
+  }
 
   useEffect(() => {
 
   })
   return (
     <Card
-      style={{ height: '100%' }} onDragOver={e => { e.preventDefault() }}
-      onDrop={(e) => { e.preventDefault(); canban.currentOrder.status = board.status; canban.currentOrder.order = orders.length; canban.setCurrentOrder(null) }}
+      style={{ height: '100%' }} onDragOver={onDragOverEvent}
+      onDrop={onDropEvent}
     >
       <CardContent style={{ width: 200, height: '90%' }}>
         <Grid container justify='center'>
