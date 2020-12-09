@@ -8,6 +8,7 @@ import canban from '../../store/canban'
 import { observer } from 'mobx-react-lite'
 import app from '../../store/app'
 import { statuses } from '../../utils/consts'
+import {authHost} from "../../http/axios";
 
 const statusOrder = {
   [statuses.CREATED]: 0,
@@ -21,16 +22,22 @@ const Board = observer(({ board }) => {
   const orders = canban.getOrdersByStatus(board.status)
 
   const isMoved = (orderStatus, boardStatus) => {
-    const difference = statusOrder[canban.currentOrder.status] - statusOrder[board.status]
+    const difference = statusOrder[orderStatus] - statusOrder[boardStatus]
     return difference === 1 || difference === -1;
 
   }
   const onDropEvent = (e) => {
     e.preventDefault();
     if (canban.currentOrder.status !== statuses.DELIVERED && isMoved(canban.currentOrder.status, board.status)) {
+      authHost.post(`/api/orders/${canban.currentOrder.id}/update_status`, {
+        status: board.status,
+      }).then(() => {
         canban.currentOrder.status = board.status;
         canban.currentOrder.order = orders.length;
         canban.setCurrentOrder(null)
+      }).catch(error => {
+        alert(`Ошибка запроса. ${error.message}`)
+      })
     }
   }
 
