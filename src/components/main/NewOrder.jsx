@@ -15,6 +15,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TableBody from '@material-ui/core/TableBody'
 import Box from '@material-ui/core/Box'
 import canban from "../../store/canban";
+import DialogActions from "@material-ui/core/DialogActions";
 
 const NewOrder = observer(() => {
 
@@ -75,18 +76,19 @@ const NewOrder = observer(() => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <Divider style={{marginTop:20}}/>
-                    <Grid container justify="flex-end">
-                        <Button
-                            onClick={() => addOrder()}
-                            style={{marginTop:10}}
-                            color="primary"
-                            variant="outlined">
-                            Создать заказ
-                        </Button>
-                    </Grid>
                 </Box>
             </DialogContent>
+            <DialogActions>
+                <Grid container justify="flex-end" style={{marginRight:15, marginBottom:10}}>
+                    <Button
+                        onClick={() => addOrder()}
+                        style={{marginTop:10}}
+                        color="primary"
+                        variant="outlined">
+                        Создать заказ
+                    </Button>
+                </Grid>
+            </DialogActions>
         </Dialog>
     )
 })
