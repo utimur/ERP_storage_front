@@ -37,10 +37,8 @@ class Canban {
                 this.boards.forEach(board => {
                     board.orders = resp.data.data.filter(o => o.status === board.status)
                 })
-                console.log(toJS(this.boards))
             })
             .catch(err => {
-                console.log(err)
             })
     }
 
@@ -49,13 +47,7 @@ class Canban {
         this.currentOrder = order
     }
 
-    async addOrder(goods) {
-        // authHost.post(`/`)
-        const order = {
-            delivery_expected_at: new Date() / 1, // TODO: set from args
-            delivery_company_id: 1, // TODO: add warehouses logic
-            goods
-        }
+    async addOrder(order) {
         const res = await authHost.post("/api/orders", order)
         this.boards[0].orders.push(res.data)
         app.hideOrderDialog()

@@ -11,20 +11,25 @@ class User {
         return this.id !== null
     }
 
+    parseToken(token) {
+        const decoded = jwtDecode(token)
+        this.id = decoded.id
+        this.username = decoded.username
+        this.role = decoded.role
+    }
+
     constructor() {
         makeAutoObservable(this)
         const token = localStorage.getItem('token')
         if (token !== null) {
-            const decoded = jwtDecode(token)
-            this.id = decoded.id
-            this.username = decoded.username
-            this.role = decoded.role
+            this.parseToken(token)
         }
     }
 
     logout() {
         localStorage.removeItem('token')
-        this.user = null
+        this.id = null
+        this.role = null
     }
 
     login(username, password) {
@@ -38,7 +43,7 @@ class User {
     }
     auth (token) {
         localStorage.setItem('token', token)
-        this.isAuth = true
+        this.parseToken(token)
     }
     registration(username, password) {
         const ROLE = "admin"

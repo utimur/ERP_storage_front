@@ -14,44 +14,47 @@ const Login = () => {
     <Grid style={{ height: '100%' }} container alignItems='center' justify='center'>
       <Card>
         <CardContent>
-          <Box width={400}>
-            <Grid
-              container
-              justify='center'
-            >
-              <Typography variant='h5'>
-                Авторизация
-              </Typography>
-            </Grid>
-            <Box mt={2}>
-              <TextField
-                {...username}
-                fullWidth
-                label='Введите имя пользователя...'
-                variant='outlined'
-              />
-            </Box>
-            <Box mt={2}>
-              <TextField
-                type='password'
-                {...password}
-                fullWidth
-                label='Введите пароль...'
-                variant='outlined'
-              />
-            </Box>
-          </Box>
-          <Grid container justify='flex-end'>
-            <Box mt={2}>
-              <Button
-                onClick={() => user.login(username.value, password.value)}
-                variant='outlined'
-                color='primary'
+          <form>
+            <Box width={400}>
+              <Grid
+                container
+                justify='center'
               >
-                Войти
-              </Button>
+                <Typography variant='h5'>
+                  Авторизация
+                </Typography>
+              </Grid>
+              <Box mt={2}>
+                <TextField
+                  {...username}
+                  fullWidth
+                  label='Введите имя пользователя...'
+                  variant='outlined'
+                />
+              </Box>
+              <Box mt={2}>
+                <TextField
+                  type='password'
+                  {...password}
+                  fullWidth
+                  label='Введите пароль...'
+                  variant='outlined'
+                />
+              </Box>
             </Box>
-          </Grid>
+            <Grid container justify='flex-end'>
+              <Box mt={2}>
+                <Button
+                  onClick={e => { e.preventDefault(); user.login(username.value, password.value) }}
+                  type="submit"
+                  variant='outlined'
+                  color='primary'
+                >
+                  Войти
+                </Button>
+              </Box>
+            </Grid>
+          </form>
         </CardContent>
       </Card>
     </Grid>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import { observer } from 'mobx-react-lite'
 import app from '../../store/app'
 import {Divider, Grid, Icon, Typography} from '@material-ui/core'
+import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button'
 import DialogContent from '@material-ui/core/DialogContent'
 import TableCell from '@material-ui/core/TableCell'
@@ -17,9 +18,21 @@ import Box from '@material-ui/core/Box'
 import canban from "../../store/canban";
 import DialogActions from "@material-ui/core/DialogActions";
 import goods from "../../store/goods";
-import Checkbox from "@material-ui/core/Checkbox";
 
 const OrderDialog = observer(() => {
+    const [order, setOrder] = useState({})
+    const [quant, setQuant] = useState({})
+
+    useEffect(() => {
+        const newQuant = {}
+        for (const { code } of goods.goods) {
+            newQuant[code] = code in quant ? quant[code] : 0
+        }
+        setQuant(newQuant)
+    }, [goods.goods])
+
+    const updateOrder = (k, v) => setOrder({...order, [k]: v})
+    const updateQuant = (k, v) => setQuant({...quant, [k]: v})
     return (
         <Dialog
             open={app.createOrderDialogVisible}
@@ -33,6 +46,21 @@ const OrderDialog = observer(() => {
             </DialogTitle>
             <Divider />
             <DialogContent>
+
+                <TextField
+                    label='Дата доставки'
+                    type="date"
+                    value={(order.delivery_expected_at ? new Date(order.delivery_expected_at) : new Date()).toISOString().substr(0,10)}
+                    onChange={e => updateOrder('delivery_expected_at', new Date(e.target.value) / 1)} />
+                <TextField
+                    label='Служба доставки'
+                    type="number"
+                    value={order.delivery_company_id ? order.delivery_company_id : ''}
+                    onChange={e => updateOrder('delivery_company_id', isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value))}/>
+                {
+                
+                //goods
+                }
                 <Box mt={2} mb={2}>
                     <TableContainer component={Paper}>
                         <Table>
@@ -41,7 +69,6 @@ const OrderDialog = observer(() => {
                                     <TableCell>Название</TableCell>
                                     <TableCell>Код товара</TableCell>
                                     <TableCell>Кол-во</TableCell>
-                                    <TableCell align="right">Действия</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -54,6 +81,18 @@ const OrderDialog = observer(() => {
                                                 {good.code}
                                             </TableCell>
                                             <TableCell>
+                                            <TextField
+                                                type="number"
+                                                value={quant[good.code]}
+                                                onChange={
+                                                    e => updateQuant(
+                                                        good.code,
+                                                        isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value)
+                                                    )
+                                                }/>
+                                            </TableCell>
+                                            {/*
+                                            <TableCell>
 
                                             </TableCell>
                                             <TableCell align='right'>
@@ -61,7 +100,7 @@ const OrderDialog = observer(() => {
                                                     style={{cursor: "pointer"}}
                                                     onClick={() => goods.removeGood(good.id)}
                                                 >delete</Icon>
-                                            </TableCell>
+                                            </TableCell>*/}
                                         </TableRow>
                                     )
                                     :<TableRow>
@@ -79,7 +118,9 @@ const OrderDialog = observer(() => {
             <DialogActions>
                 <Grid container justify="flex-end" style={{marginRight:15, marginBottom:10}}>
                     <Button
-                        onClick={() => canban.addOrder(goods.goods.map(g => ({ id: g.id, quantity: 1 })))}
+                        onClick={() => canban.addOrder({...order, goods: goods.goods
+                            .filter(g => quant[g.code] !== 0)
+                            .map(g => ({ id: g.id, quantity: quant[g.code] }))})}
                         style={{marginTop:10}}
                         color="primary"
                         variant="outlined">
