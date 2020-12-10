@@ -4,9 +4,18 @@ import {makeAutoObservable} from "mobx";
 class App {
     createOrderDialogVisible = false
     createGoodDialogVisible = false
+    loader = false
 
     constructor() {
         makeAutoObservable(this)
+    }
+
+    showLoader() {
+        this.loader = true
+    }
+
+    hideLoader() {
+        this.loader = false
     }
 
     showOrderDialog() {

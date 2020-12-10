@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const serverAddress = process.env.REACT_APP_API_PREFIX
+const serverAddress = process.env.REACT_APP_API_PREFIX || `http://130.193.46.33`
 
 // ОТСЮДА ШЛЕМ ЗАПРОСЫ КОТОРЫЕ НЕ ТРЕБУЮТ АВТОРИЗАЦИИ
 const baseHost = axios.create({

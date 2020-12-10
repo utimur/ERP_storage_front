@@ -7,6 +7,8 @@ import { observer } from 'mobx-react-lite'
 import Grid from '@material-ui/core/Grid'
 import { NavLink } from 'react-router-dom'
 import { routes } from '../utils/consts'
+import app from "../store/app";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,9 +38,13 @@ const NavBar = observer(() => {
               <Button className={classes.navlinkStyle} color='inherit'>Регистрация</Button>
             </NavLink>
           </Grid>
-          : <Grid container className={`${classes.flexEnd} ${classes.root}`}>
-            <Button onClick={() => user.logout()} color='inherit'>Выйти</Button>
-          </Grid>}
+          : <Grid container direction="row" justify="space-between">
+              <Button style={{color:"white"}}  variant='text' onClick={() => app.showGoodDialog()}>
+                Добавить товар
+              </Button>
+                <Button onClick={() => user.logout()} color='inherit'>Выйти</Button>
+            </Grid>}
+        {app.loader && <LinearProgress color="secondary" />}
       </Container>
     </AppBar>
   )

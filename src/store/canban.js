@@ -25,7 +25,6 @@ class Canban {
 
      */
     currentOrder = null
-    goods = []
     constructor() {
         makeAutoObservable(this)
     }
@@ -63,20 +62,8 @@ class Canban {
         this.goods = []
     }
 
-    addGood(name, code) {
-        // authHost.post(`/`)
-        const good = {
-            id: Date.now(),
-            name,
-            code
-        }
-        this.goods.push(good)
-        app.hideGoodDialog()
-    }
 
-    removeGood(id) {
-        this.goods = this.goods.filter(good => good.id !== id)
-    }
+
     moveOrder(boardStatus) {
         let currentBoard = null
         let boardForDrop = null
@@ -108,7 +95,8 @@ class Canban {
         }).sort(compare)
     }
      */
-}
+
+
 /*
 function compare (a,b) {
     return a.order > b.order? 1: -1
