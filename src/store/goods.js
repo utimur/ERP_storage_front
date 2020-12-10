@@ -20,7 +20,7 @@ class Goods {
     fetchGoods() {
         app.showLoader()
         authHost.get("/api/goods")
-            .then(resp => this.goods = resp.data)
+            .then(resp => this.goods = resp.data.data)
             .catch(e => console.log(e))
             .finally(() => app.hideLoader())
     }

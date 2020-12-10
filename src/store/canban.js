@@ -41,7 +41,6 @@ class Canban {
                 })
             })
             .catch(err => {
-                alert(`Ошибка получения заказов, ${err.message}`)
             })
     }
 

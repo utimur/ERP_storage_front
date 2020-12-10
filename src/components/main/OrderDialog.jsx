@@ -50,7 +50,7 @@ const OrderDialog = observer(() => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {goods.goods.length ? canban.goods.map((good) =>
+                                {goods.goods.length ? goods.goods.map((good) =>
                                         <TableRow key={good.name}>
                                             <TableCell component='th' scope='row'>
                                                 {good.name}
