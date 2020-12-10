@@ -1,18 +1,29 @@
 import {makeAutoObservable} from "mobx";
 import {baseHost} from "../http/axios";
+import jwtDecode from 'jwt-decode'
 
 // CТЭЙТ ДЛЯ ЮЗЕР ИНФОРМЕЙШН
 class User {
-    isAuth = true
-    user = null
+    id = null
+    role = null
+
+    get isAuth() {
+        return this.id !== null
+    }
 
     constructor() {
         makeAutoObservable(this)
+        const token = localStorage.getItem('token')
+        if (token !== null) {
+            const decoded = jwtDecode(token)
+            this.id = decoded.id
+            this.username = decoded.username
+            this.role = decoded.role
+        }
     }
 
     logout() {
         localStorage.removeItem('token')
-        this.isAuth = false
         this.user = null
     }
 

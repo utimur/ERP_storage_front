@@ -20,11 +20,6 @@ import goods from "../../store/goods";
 import Checkbox from "@material-ui/core/Checkbox";
 
 const OrderDialog = observer(() => {
-
-    const addOrder = () => {
-        canban.addOrder()
-    }
-
     return (
         <Dialog
             open={app.createOrderDialogVisible}
@@ -84,7 +79,7 @@ const OrderDialog = observer(() => {
             <DialogActions>
                 <Grid container justify="flex-end" style={{marginRight:15, marginBottom:10}}>
                     <Button
-                        onClick={() => addOrder()}
+                        onClick={() => canban.addOrder(goods.goods.map(g => ({ id: g.id, quantity: 1 })))}
                         style={{marginTop:10}}
                         color="primary"
                         variant="outlined">

@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     color: 'white'
   }
-
 }))
 
 const NavBar = observer(() => {

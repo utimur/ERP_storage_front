@@ -3,6 +3,7 @@ import {statuses} from "../utils/consts";
 import {authHost} from "../http/axios";
 import app from "./app";
 import user from "./user";
+import {toJS} from "mobx"
 
 class Canban {
     boards = [
@@ -10,12 +11,12 @@ class Canban {
         {id: 2, status: statuses.FORMALIZING, title: 'Оформление', orders: []},
         {id: 3, status: statuses.COLLECTING, title: 'Сборка', orders: []},
         {id: 4, status: statuses.DELIVERING, title: 'Доставка', orders: []},
-        {id: 5, status: statuses.DELIVERED, title: 'Выполнено', orders: []},
+        {id: 5, status: statuses.DONE, title: 'Выполнено', orders: []},
     ]
     /*
     orders = [
         {id:1, status: statuses.CREATED, title: 'Машина'},
-        {id:2, status: statuses.DELIVERED, title: 'Салат'},
+        {id:2, status: statuses.DONE, title: 'Салат'},
         {id:3, status: statuses.DELIVERING, title: 'Топор'},
         {id:4, status: statuses.DELIVERING, title: 'Очки'},
         {id:5, status: statuses.COLLECTING, title: 'Книга'},
@@ -31,16 +32,15 @@ class Canban {
     }
 
     fetchOrders(status) {
-        authHost.get(`/api/orders?user_id=${user.id}&status=${status}`)
+        authHost.get(`/api/orders?user_id=${user.id}`)
             .then(resp => {
                 this.boards.forEach(board => {
-                    if (board.status === status) {
-                        board.orders = resp.data
-                        return
-                    }
+                    board.orders = resp.data.data.filter(o => o.status === board.status)
                 })
+                console.log(toJS(this.boards))
             })
             .catch(err => {
+                console.log(err)
             })
     }
 
@@ -49,14 +49,15 @@ class Canban {
         this.currentOrder = order
     }
 
-    addOrder() {
+    async addOrder(goods) {
         // authHost.post(`/`)
         const order = {
-            id: Date.now(), //todo сделать запросы и убрать костыльный айди
-            status: statuses.CREATED,
-            title: 'ПОКА ХЗ ЧТО ТУТ'
+            delivery_expected_at: new Date() / 1, // TODO: set from args
+            delivery_company_id: 1, // TODO: add warehouses logic
+            goods
         }
-        this.orders.push(order)
+        const res = await authHost.post("/api/orders", order)
+        this.boards[0].orders.push(res.data)
         app.hideOrderDialog()
         this.goods = []
     }

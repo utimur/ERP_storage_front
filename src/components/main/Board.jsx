@@ -18,7 +18,7 @@ const statusOrder = {
     [statuses.FORMALIZING]: 1,
     [statuses.COLLECTING] : 2,
     [statuses.DELIVERING]: 3,
-    [statuses.DELIVERED]: 4,
+    [statuses.DONE]: 4,
 }
 
 const Board = observer(({ board }) => {
@@ -31,11 +31,10 @@ const Board = observer(({ board }) => {
     }
     const onDropEvent = (e) => {
         e.preventDefault();
-        if (canban.currentOrder.status !== statuses.DELIVERED && isMoved(canban.currentOrder.status, board.status)) {
+        if (canban.currentOrder.status !== statuses.DONE && isMoved(canban.currentOrder.status, board.status)) {
             authHost.post(`/api/orders/${canban.currentOrder.id}/update_status`, {
                 status: board.status
-            })
-            canban.moveOrder(board.status)
+            }).then(() => canban.moveOrder(board.status))
         }
     }
 

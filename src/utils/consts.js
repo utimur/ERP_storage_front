@@ -8,7 +8,7 @@ const CREATED = 'created'
 const FORMALIZING = 'formalizing'
 const COLLECTING = 'collecting'
 const DELIVERING = 'delivering'
-const DELIVERED = 'delivered'
+const DONE = 'done'
 
 export const routes = {
   REGISTRATION_ROUTE,
@@ -21,5 +21,5 @@ export const statuses = {
   FORMALIZING,
   COLLECTING,
   DELIVERING,
-  DELIVERED
+  DONE
 }

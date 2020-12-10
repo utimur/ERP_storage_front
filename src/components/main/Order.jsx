@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Order = ({ card }) => {
-    const isDelivered = card.status === statuses.DELIVERED
+    const isDelivered = card.status === statuses.DONE
     const styles = useStyles()
 
 
