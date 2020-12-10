@@ -25,7 +25,7 @@ const Order = ({ card }) => {
         draggable={!isDelivered}
         onDragStart={e => { canban.setCurrentOrder(card) }}>
       <Box p={1} width='80%'>
-        {card.title}
+        {card.id}
       </Box>
     </Card>
   )
