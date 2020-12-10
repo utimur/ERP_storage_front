@@ -6,11 +6,11 @@ import user from "./user";
 
 class Canban {
     boards = [
-        {id:1,status: statuses.CREATED, title:'Заказы', orders: []},
-        {id:2,status:  statuses.FORMALIZING, title:'Оформление', orders: []},
-        {id:3,status:  statuses.COLLECTING, title:'Сборка', orders: []},
-        {id:4,status:  statuses.DELIVERING, title:'Доставка', orders: []},
-        {id:5,status:  statuses.DELIVERED, title:'Выполнено', orders: []},
+        {id: 1, status: statuses.CREATED, title: 'Заказы', orders: []},
+        {id: 2, status: statuses.FORMALIZING, title: 'Оформление', orders: []},
+        {id: 3, status: statuses.COLLECTING, title: 'Сборка', orders: []},
+        {id: 4, status: statuses.DELIVERING, title: 'Доставка', orders: []},
+        {id: 5, status: statuses.DELIVERED, title: 'Выполнено', orders: []},
     ]
     /*
     orders = [
@@ -25,6 +25,7 @@ class Canban {
 
      */
     currentOrder = null
+
     constructor() {
         makeAutoObservable(this)
     }
@@ -45,7 +46,6 @@ class Canban {
     }
 
 
-
     setCurrentOrder(order) {
         this.currentOrder = order
     }
@@ -63,15 +63,13 @@ class Canban {
     }
 
 
-
     moveOrder(boardStatus) {
         let currentBoard = null
         let boardForDrop = null
         this.boards.forEach(board => {
             if (board.status === this.currentOrder.status) {
                 currentBoard = board
-            }
-            else if (board.status === boardStatus) {
+            } else if (board.status === boardStatus) {
                 boardForDrop = board
             }
         })
@@ -81,6 +79,7 @@ class Canban {
         this.currentOrder.status = boardStatus
         this.setCurrentOrder(null)
     }
+
     /*
     getOrdersByStatus(status) {
         let currentOrderInArray = 0
@@ -97,12 +96,12 @@ class Canban {
      */
 
 
-/*
-function compare (a,b) {
-    return a.order > b.order? 1: -1
+    /*
+    function compare (a,b) {
+        return a.order > b.order? 1: -1
+    }
+
+     */
 }
-
- */
-
 
 export default new Canban()
