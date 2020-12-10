@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Card from '@material-ui/core/Card'
 import {Button, CardActionArea, CardContent, Icon, IconButton, Typography} from '@material-ui/core'
 import Box from '@material-ui/core/Box'
@@ -9,6 +9,9 @@ import { observer } from 'mobx-react-lite'
 import app from '../../store/app'
 import { statuses } from '../../utils/consts'
 import '../../App.css'
+import {authHost} from "../../http/axios";
+
+// Необходимо сделать 2 исправления - (загрузка заказов: 45, изменение статуса: 34)
 
 const statusOrder = {
     [statuses.CREATED]: 0,
@@ -19,19 +22,20 @@ const statusOrder = {
 }
 
 const Board = observer(({ board }) => {
-    const orders = canban.getOrdersByStatus(board.status)
+    const orders = board.orders
 
     const isMoved = (orderStatus, boardStatus) => {
-        const difference = statusOrder[canban.currentOrder.status] - statusOrder[board.status]
+        const difference = statusOrder[orderStatus] - statusOrder[boardStatus]
         return difference === 1 || difference === -1;
 
     }
     const onDropEvent = (e) => {
         e.preventDefault();
         if (canban.currentOrder.status !== statuses.DELIVERED && isMoved(canban.currentOrder.status, board.status)) {
-            canban.currentOrder.status = board.status;
-            canban.currentOrder.order = orders.length;
-            canban.setCurrentOrder(null)
+            authHost.post(`/api/orders/${canban.currentOrder.id}/update_status`, {
+                status: board.status
+            })
+            canban.moveOrder(board.status)
         }
     }
 
@@ -41,8 +45,8 @@ const Board = observer(({ board }) => {
     }
 
     useEffect(() => {
-
-    })
+        canban.fetchOrders(board.status)
+    }, [])
     return (
         <Card
             style={{ height: '100%' }}
@@ -55,7 +59,7 @@ const Board = observer(({ board }) => {
                         {board.title}
                     </Typography>
                 </Grid>
-                {canban.getOrdersByStatus(board.status).map(card =>
+                {orders.map(card =>
                     <Order key={card.id} card={card} />
                 )}
             </CardContent>
