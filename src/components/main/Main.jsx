@@ -8,6 +8,7 @@ import canban from '../../store/canban'
 import Card from '@material-ui/core/Card'
 import NewOrder from './NewOrder'
 import app from '../../store/app'
+import NewGood from "./NewGood";
 
 const Main = observer(() => {
   useEffect(() => {
@@ -22,6 +23,7 @@ const Main = observer(() => {
         )}
       </Grid>
       <NewOrder open={app.createOrderDialogVisible} />
+      <NewGood/>
     </Container>
   )
 })

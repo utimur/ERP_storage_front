@@ -1,6 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import {statuses} from "../utils/consts";
 import {authHost} from "../http/axios";
+import app from "./app";
 
 class Canban {
     boards = [
@@ -20,6 +21,7 @@ class Canban {
         {id:7, status: statuses.CREATED, title: 'Руль'},
         ]
     currentOrder = null
+    goods = []
     constructor() {
         makeAutoObservable(this)
     }
@@ -46,6 +48,33 @@ class Canban {
 
     setCurrentOrder(order) {
         this.currentOrder = order
+    }
+
+    addOrder() {
+        // authHost.post(`/`)
+        const order = {
+            id: Date.now(), //todo сделать запросы и убрать костыльный айди
+            status: statuses.CREATED,
+            title: 'ПОКА ХЗ ЧТО ТУТ'
+        }
+        this.orders.push(order)
+        app.hideOrderDialog()
+        this.goods = []
+    }
+
+    addGood(name, code) {
+        // authHost.post(`/`)
+        const good = {
+            id: Date.now(),
+            name,
+            code
+        }
+        this.goods.push(good)
+        app.hideGoodDialog()
+    }
+
+    removeGood(id) {
+        this.goods = this.goods.filter(good => good.id !== id)
     }
 }
 

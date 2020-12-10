@@ -17,8 +17,13 @@ const useStyles = makeStyles((theme) => ({
 const Order = ({ card }) => {
     const isDelivered = card.status === statuses.DELIVERED
     const styles = useStyles()
+
+
   return (
-    <Card className={`${styles.margin} ${!isDelivered && styles.cursor}`} draggable={!isDelivered} onDragStart={e => { canban.setCurrentOrder(card) }}>
+    <Card
+        className={`${styles.margin} ${!isDelivered && styles.cursor}`}
+        draggable={!isDelivered}
+        onDragStart={e => { canban.setCurrentOrder(card) }}>
       <Box p={1} width='80%'>
         {card.title}
       </Box>
