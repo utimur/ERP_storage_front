@@ -16,8 +16,10 @@ import TableBody from '@material-ui/core/TableBody'
 import Box from '@material-ui/core/Box'
 import canban from "../../store/canban";
 import DialogActions from "@material-ui/core/DialogActions";
+import goods from "../../store/goods";
+import Checkbox from "@material-ui/core/Checkbox";
 
-const NewOrder = observer(() => {
+const OrderDialog = observer(() => {
 
     const addOrder = () => {
         canban.addOrder()
@@ -32,9 +34,6 @@ const NewOrder = observer(() => {
             <DialogTitle>
                 <Grid container alignItems='center' justify='space-between'>
                     <Typography variant='h6'>Новый заказ</Typography>
-                    <Button color='primary' variant='outlined' onClick={() => app.showGoodDialog()}>
-                        Добавить товар
-                    </Button>
                 </Grid>
             </DialogTitle>
             <Divider />
@@ -46,11 +45,12 @@ const NewOrder = observer(() => {
                                 <TableRow>
                                     <TableCell>Название</TableCell>
                                     <TableCell>Код товара</TableCell>
+                                    <TableCell>Кол-во</TableCell>
                                     <TableCell align="right">Действия</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {canban.goods.length ? canban.goods.map((good) =>
+                                {goods.goods.length ? canban.goods.map((good) =>
                                         <TableRow key={good.name}>
                                             <TableCell component='th' scope='row'>
                                                 {good.name}
@@ -58,10 +58,13 @@ const NewOrder = observer(() => {
                                             <TableCell>
                                                 {good.code}
                                             </TableCell>
+                                            <TableCell>
+
+                                            </TableCell>
                                             <TableCell align='right'>
                                                 <Icon
                                                     style={{cursor: "pointer"}}
-                                                    onClick={() => canban.removeGood(good.id)}
+                                                    onClick={() => goods.removeGood(good.id)}
                                                 >delete</Icon>
                                             </TableCell>
                                         </TableRow>
@@ -93,4 +96,4 @@ const NewOrder = observer(() => {
     )
 })
 
-export default NewOrder
+export default OrderDialog

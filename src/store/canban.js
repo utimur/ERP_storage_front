@@ -21,7 +21,6 @@ class Canban {
         {id:7, status: statuses.CREATED, title: 'Руль'},
         ]
     currentOrder = null
-    goods = []
     constructor() {
         makeAutoObservable(this)
     }
@@ -62,20 +61,7 @@ class Canban {
         this.goods = []
     }
 
-    addGood(name, code) {
-        // authHost.post(`/`)
-        const good = {
-            id: Date.now(),
-            name,
-            code
-        }
-        this.goods.push(good)
-        app.hideGoodDialog()
-    }
 
-    removeGood(id) {
-        this.goods = this.goods.filter(good => good.id !== id)
-    }
 }
 
 function compare (a,b) {

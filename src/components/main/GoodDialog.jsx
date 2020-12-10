@@ -10,15 +10,16 @@ import {observer} from "mobx-react-lite";
 import TextField from "@material-ui/core/TextField";
 import {useInput} from "../../hooks/useInput";
 import canban from "../../store/canban";
+import goods from "../../store/goods";
 
-const NewGood = observer(() => {
+const GoodDialog = observer(() => {
     const name = useInput('')
     const code = useInput('')
 
     const addGood = () => {
         name.onChange({target: {value: ''}})
         code.onChange({target: {value: ''}})
-        canban.addGood(name.value, code.value)
+        goods.addGood(name.value, code.value)
     }
 
     return (
@@ -58,4 +59,4 @@ const NewGood = observer(() => {
     );
 });
 
-export default NewGood;
+export default GoodDialog;
