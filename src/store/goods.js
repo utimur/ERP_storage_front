@@ -10,7 +10,7 @@ class Goods {
     }
 
     addGood(name, code) {
-        authHost.post(`/api/goods`, {name, code, warehouse_id:0})
+        authHost.post(`/api/goods`, {name, code, warehouse_id:1})
             .then(resp => this.goods.push(resp.data))
             .catch(e => console.log(e))
             .finally(() => app.hideGoodDialog())
