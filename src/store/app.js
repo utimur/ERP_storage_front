@@ -5,9 +5,14 @@ class App {
     createOrderDialogVisible = false
     createGoodDialogVisible = false
     loader = false
+    readonly = false
 
     constructor() {
         makeAutoObservable(this)
+    }
+
+    setReadonly(bool) {
+        this.readonly = bool
     }
 
     showLoader() {

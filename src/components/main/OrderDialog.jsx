@@ -19,14 +19,23 @@ import canban from "../../store/canban";
 import DialogActions from "@material-ui/core/DialogActions";
 import goods from "../../store/goods";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Input from "@material-ui/core/Input";
+import Tooltip from "@material-ui/core/Tooltip";
+import {statuses} from "../../utils/consts";
 
-const OrderDialog = observer(() => {
+const OrderDialog = observer(({initialOrder = {}, readonly}) => {
     const [order, setOrder] = useState({})
     const [quant, setQuant] = useState({})
+    const [isCreate, setIsCreate] = useState(false)
 
     useEffect(() => {
-        updateOrder('delivery_expected_at', new Date() / 1)
-    }, [])
+        if (!readonly) {
+            updateOrder('delivery_expected_at', new Date() / 1);
+        }else {
+            setOrder(initialOrder)
+        }
+        setIsCreate(false)
+    }, [app.createOrderDialogVisible])
 
     useEffect(() => {
         const newQuant = {}
@@ -37,7 +46,25 @@ const OrderDialog = observer(() => {
     }, [goods.goods])
 
     const updateOrder = (k, v) => setOrder({...order, [k]: v})
-    const updateQuant = (k, v) => setQuant({...quant, [k]: v})
+    const updateQuant = (k, v) => {
+        if (v < 0 || !v) {
+            setQuant({...quant, [k]: 0});
+            return false
+        }
+        setQuant({...quant, [k]: v});
+    }
+
+    const addOrder = () => {
+        setIsCreate(true)
+        canban.addOrder({...order, goods: goods.goods
+                .filter(g => quant[g.code] !== 0)
+                .map(g => ({ id: g.id, quantity: quant[g.code] }))})
+            .then(() => {
+                setOrder({})
+                setQuant({})
+            })
+    }
+
     return (
         <Dialog
             open={app.createOrderDialogVisible}
@@ -51,29 +78,43 @@ const OrderDialog = observer(() => {
             </DialogTitle>
             <Divider />
             <DialogContent>
-                <Grid container spacing={3} style={{marginTop: 10}}>
-                    <Grid item xs={6} >
+                <Grid alignItems="center" container spacing={2} style={{marginTop: 10}}>
+                    <Grid item xs={readonly ? 5 : 6} >
                         <TextField
+                            disabled={readonly}
                             fullWidth
                             label='Дата доставки'
                             type="date"
+                            required
+                            error={isCreate && !order.delivery_expected_at}
                             variant="outlined"
                             value={(order.delivery_expected_at ? new Date(order.delivery_expected_at) : new Date()).toISOString().substr(0,10)}
                             onChange={e => updateOrder('delivery_expected_at', new Date(e.target.value) / 1)} />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={readonly ? 5 : 6}>
                         <TextField
+                            disabled={readonly}
                             fullWidth
                             label='Служба доставки'
                             type="number"
+                            required
+                            error={isCreate && !order.delivery_company_id}
                             variant="outlined"
                             value={order.delivery_company_id ? order.delivery_company_id : ''}
                             onChange={e => updateOrder('delivery_company_id', isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value))}/>
                     </Grid>
+                    {(readonly && order.status === statuses.FORMALIZING) && <Grid item xs={2}>
+                        <label htmlFor="file-input">
+                            <Tooltip title="Прикрепить документ">
+                                <Icon style={{fontSize: 50, cursor: "pointer"}}>note_add</Icon>
+                            </Tooltip>
+                        </label>
+                        <input style={{display: "none"}} id="file-input" type="file"/>
+                    </Grid>}
                 </Grid>
                 {
 
-                //goods
+                    //goods
                 }
                 <Box mt={2} mb={2}>
                     <TableContainer component={Paper}>
@@ -82,7 +123,7 @@ const OrderDialog = observer(() => {
                                 <TableRow>
                                     <TableCell>Название</TableCell>
                                     <TableCell>Код товара</TableCell>
-                                    <TableCell>Кол-во</TableCell>
+                                    { !readonly && <TableCell align="right">Кол-во</TableCell>}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -94,27 +135,20 @@ const OrderDialog = observer(() => {
                                             <TableCell>
                                                 {good.code}
                                             </TableCell>
-                                            <TableCell>
-                                            <TextField
-                                                type="number"
-                                                value={quant[good.code]}
-                                                onChange={
-                                                    e => updateQuant(
-                                                        good.code,
-                                                        isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value)
-                                                    )
-                                                }/>
-                                            </TableCell>
-                                            {/*
-                                            <TableCell>
-
-                                            </TableCell>
-                                            <TableCell align='right'>
-                                                <Icon
-                                                    style={{cursor: "pointer"}}
-                                                    onClick={() => goods.removeGood(good.id)}
-                                                >delete</Icon>
-                                            </TableCell>*/}
+                                            { !readonly && <TableCell align="right" width={100}>
+                                                <TextField
+                                                    disabled={readonly}
+                                                    type="number"
+                                                    value={quant[good.code]}
+                                                    variant="outlined"
+                                                    size="small"
+                                                    onChange={
+                                                        e => updateQuant(
+                                                            good.code,
+                                                            isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value)
+                                                        )
+                                                    }/>
+                                            </TableCell>}
                                         </TableRow>
                                     )
                                     :<TableRow>
@@ -129,19 +163,17 @@ const OrderDialog = observer(() => {
                     </TableContainer>
                 </Box>
             </DialogContent>
-            <DialogActions>
-                <Grid container justify="flex-end" style={{marginRight:15, marginBottom:10}}>
+            {!readonly &&<DialogActions>
+                <Grid container justify="flex-end" style={{marginRight: 15, marginBottom: 10}}>
                     <Button
-                        onClick={() => canban.addOrder({...order, goods: goods.goods
-                            .filter(g => quant[g.code] !== 0)
-                            .map(g => ({ id: g.id, quantity: quant[g.code] }))})}
-                        style={{marginTop:10}}
+                        onClick={() => addOrder()}
+                        style={{marginTop: 10}}
                         color="primary"
                         variant="outlined">
                         Создать заказ
                     </Button>
                 </Grid>
-            </DialogActions>
+            </DialogActions>}
         </Dialog>
     )
 })

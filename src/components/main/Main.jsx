@@ -24,7 +24,7 @@ const Main = observer(() => {
           <Board board={board} key={board.id} />
         )}
       </Grid>
-      <OrderDialog open={app.createOrderDialogVisible} />
+      <OrderDialog initialOrder={canban.initialOrder} readonly={app.readonly} />
       <GoodDialog/>
     </Container>
   )

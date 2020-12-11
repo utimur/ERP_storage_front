@@ -67,7 +67,10 @@ const Board = observer(({ board }) => {
                     <Icon
                         fontSize="large"
                         style={{cursor: "pointer"}}
-                        onClick={() => app.showOrderDialog()}>
+                        onClick={() => {
+                            app.setReadonly(false)
+                            app.showOrderDialog()
+                        }}>
                         add_circle_outline
                     </Icon>
                 </Grid>

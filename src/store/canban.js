@@ -26,10 +26,16 @@ class Canban {
 
      */
     currentOrder = null
+    initialOrder = {}
 
     constructor() {
         makeAutoObservable(this)
     }
+
+    setInitialOrder(order) {
+        this.initialOrder = order
+    }
+
 
     fetchOrders(status) {
         authHost.get(`/api/orders?user_id=${user.id}`)
