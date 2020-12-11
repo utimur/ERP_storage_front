@@ -18,10 +18,15 @@ import Box from '@material-ui/core/Box'
 import canban from "../../store/canban";
 import DialogActions from "@material-ui/core/DialogActions";
 import goods from "../../store/goods";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 const OrderDialog = observer(() => {
     const [order, setOrder] = useState({})
     const [quant, setQuant] = useState({})
+
+    useEffect(() => {
+        updateOrder('delivery_expected_at', new Date() / 1)
+    }, [])
 
     useEffect(() => {
         const newQuant = {}
@@ -46,19 +51,28 @@ const OrderDialog = observer(() => {
             </DialogTitle>
             <Divider />
             <DialogContent>
-
-                <TextField
-                    label='Дата доставки'
-                    type="date"
-                    value={(order.delivery_expected_at ? new Date(order.delivery_expected_at) : new Date()).toISOString().substr(0,10)}
-                    onChange={e => updateOrder('delivery_expected_at', new Date(e.target.value) / 1)} />
-                <TextField
-                    label='Служба доставки'
-                    type="number"
-                    value={order.delivery_company_id ? order.delivery_company_id : ''}
-                    onChange={e => updateOrder('delivery_company_id', isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value))}/>
+                <Grid container spacing={3} style={{marginTop: 10}}>
+                    <Grid item xs={6} >
+                        <TextField
+                            fullWidth
+                            label='Дата доставки'
+                            type="date"
+                            variant="outlined"
+                            value={(order.delivery_expected_at ? new Date(order.delivery_expected_at) : new Date()).toISOString().substr(0,10)}
+                            onChange={e => updateOrder('delivery_expected_at', new Date(e.target.value) / 1)} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            label='Служба доставки'
+                            type="number"
+                            variant="outlined"
+                            value={order.delivery_company_id ? order.delivery_company_id : ''}
+                            onChange={e => updateOrder('delivery_company_id', isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value))}/>
+                    </Grid>
+                </Grid>
                 {
-                
+
                 //goods
                 }
                 <Box mt={2} mb={2}>
