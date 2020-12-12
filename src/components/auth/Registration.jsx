@@ -21,13 +21,19 @@ const Registration = () => {
               <Box mt={2}>
                 <TextField
                   value={username.value} onChange={e => username.setValue(e.target.value)}
-                  fullWidth label='Введите имя пользователя...' variant='outlined' error={!username.isValid && username.value !== ''} helperText={username.error}
+                  fullWidth label='Введите имя пользователя...' variant='outlined'
+                  error={!username.isValid && username.isActive && username.value !== ''}
+                  helperText={username.isActive && username.error}
+                  onFocus={() => username.setIsActive(true)}
                 />
               </Box>
               <Box mt={2}>
                 <TextField
                   value={password.value} onChange={e => password.setValue(e.target.value)} type='password'
-                  fullWidth label='Введите пароль...' variant='outlined' error={!password.isValid && password.value !== ''} helperText={password.error}
+                  fullWidth label='Введите пароль...' variant='outlined'
+                  error={!password.isValid && password.value !== ''}
+                  helperText={password.isActive && password.error}
+                  onFocus={() => password.setIsActive(true)}
                 />
               </Box>
             </Box>

@@ -5,10 +5,11 @@ import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import user from '../../store/user'
 import { useInput } from '../../hooks/useInput'
+import useInfo from "../../hooks/useInfo";
 
 const Login = () => {
-  const username = useInput('')
-  const password = useInput('')
+  const username = useInfo('', { isEmpty: false, minLength: 8 })
+  const password = useInfo('', { isEmpty: false, minLength: 8 })
 
   return (
     <Grid style={{ height: '100%' }} container alignItems='center' justify='center'>
@@ -26,19 +27,25 @@ const Login = () => {
               </Grid>
               <Box mt={2}>
                 <TextField
-                  {...username}
                   fullWidth
                   label='Введите имя пользователя...'
                   variant='outlined'
+                  value={username.value} onChange={e => username.setValue(e.target.value)}
+                  error={!username.isValid && username.isActive && username.value !== ''}
+                  helperText={username.isActive && username.error}
+                  onFocus={() => username.setIsActive(true)}
                 />
               </Box>
               <Box mt={2}>
                 <TextField
                   type='password'
-                  {...password}
                   fullWidth
                   label='Введите пароль...'
                   variant='outlined'
+                  value={password.value} onChange={e => password.setValue(e.target.value)}
+                  error={!password.isValid && password.value !== ''}
+                  helperText={password.isActive && password.error}
+                  onFocus={() => password.setIsActive(true)}
                 />
               </Box>
             </Box>
@@ -49,6 +56,7 @@ const Login = () => {
                   type="submit"
                   variant='outlined'
                   color='primary'
+                  disabled={!username.isValid || !password.isValid}
                 >
                   Войти
                 </Button>
