@@ -18,8 +18,6 @@ const useStyles = makeStyles((theme) => ({
 const Order = ({ card }) => {
     const isDelivered = card.status === statuses.DONE
     const styles = useStyles()
-
-    console.log(card)
   return (
     <Card
         className={`${styles.margin} ${!isDelivered && styles.cursor}`}
@@ -27,8 +25,7 @@ const Order = ({ card }) => {
         onDragStart={e => { canban.setCurrentOrder(card) }}
         onClick={() => {
             canban.setInitialOrder(card)
-            app.setReadonly(true)
-            app.showOrderDialog()
+            app.showOrderDialog(true)
         }}>
       <Box p={1} width='80%'>
         {card.id}

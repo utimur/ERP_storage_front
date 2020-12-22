@@ -1,14 +1,49 @@
-import React from 'react'
-import { Button, CardContent, CardHeader, Container, Grid, Typography } from '@material-ui/core'
+import React, {useState} from 'react'
+import {
+  Button,
+  CardContent,
+  CardHeader,
+  Container, FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography
+} from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import Card from '@material-ui/core/Card'
 import TextField from '@material-ui/core/TextField'
 import useInfo from '../../hooks/useInfo'
 import user from '../../store/user'
 
+const roleList = [
+  {
+    value: 'client',
+    label: 'Клиент',
+  },
+  {
+    value: 'lawyer',
+    label: 'Юрист',
+  },
+  {
+    value: 'warehouse',
+    label: 'Работник склада',
+  },
+  {
+    value: 'delivery',
+    label: 'Работник службы доставки',
+  },
+  {
+    value: 'admin',
+    label: 'Администратор',
+  },
+]
+
 const Registration = () => {
+  const defaultRole = roleList[0].value
   const username = useInfo('', { isEmpty: false, minLength: 8 })
   const password = useInfo('', { isEmpty: false, minLength: 8 })
+  const [role, setRole] = useState(defaultRole)
   return (
     <Grid style={{ height: '100%' }} container alignItems='center' justify='center'>
       <Card>
@@ -36,13 +71,27 @@ const Registration = () => {
                   onFocus={() => password.setIsActive(true)}
                 />
               </Box>
+              <Box mt={2}>
+                <FormControl variant="outlined">
+                  <InputLabel id="demo-simple-select-outlined-label">Age</InputLabel>
+                  <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={role}
+                      onChange={e => setRole(e.target.value)}
+                      label="Age"
+                  >
+                    {roleList.map(e => <MenuItem value={e.value}>{e.label}</MenuItem>)}
+                  </Select>
+                </FormControl>
+              </Box>
             </Box>
             <Grid container justify='flex-end'>
               <Box mt={2}>
                 <Button
                   type="submit"
                   variant='outlined' color='primary' disabled={!username.isValid || !password.isValid}
-                  onClick={e => { e.preventDefault(); user.registration(username.value, password.value) }}
+                  onClick={e => { e.preventDefault(); user.registration(username.value, password.value, role) }}
                 >Регистрация
                 </Button>
               </Box>

@@ -45,10 +45,9 @@ class User {
         localStorage.setItem('token', token)
         this.parseToken(token)
     }
-    registration(username, password) {
-        const ROLE = "admin"
+    registration(username, password, role) {
         baseHost.post(`/api/users`, {
-            username, password, role: ROLE,
+            username, password, role,
         }).then(response => {
             this.auth(response.data.token)
         }).catch(error => {

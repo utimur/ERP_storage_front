@@ -11,10 +11,6 @@ class App {
         makeAutoObservable(this)
     }
 
-    setReadonly(bool) {
-        this.readonly = bool
-    }
-
     showLoader() {
         this.loader = true
     }
@@ -23,7 +19,8 @@ class App {
         this.loader = false
     }
 
-    showOrderDialog() {
+    showOrderDialog(readonly = false) {
+        this.readonly = readonly
         this.createOrderDialogVisible = true
     }
 
@@ -31,7 +28,8 @@ class App {
         this.createOrderDialogVisible = false
     }
 
-    showGoodDialog() {
+    showGoodDialog(readonly = false) {
+        this.readonly = readonly
         this.createGoodDialogVisible = true
     }
 
