@@ -73,13 +73,13 @@ const Registration = () => {
               </Box>
               <Box mt={2}>
                 <FormControl variant="outlined">
-                  <InputLabel id="demo-simple-select-outlined-label">Age</InputLabel>
+                  <InputLabel id="demo-simple-select-outlined-label">Роль</InputLabel>
                   <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
                       value={role}
                       onChange={e => setRole(e.target.value)}
-                      label="Age"
+                      label="Роль"
                   >
                     {roleList.map(e => <MenuItem value={e.value}>{e.label}</MenuItem>)}
                   </Select>

@@ -1,23 +1,21 @@
-import '../App.css'
-
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import styled from "styled-components"
 import NavBar from './NavBar'
 import AppRouter from './AppRouter'
+import GlobalTheme from "./GlobalTheme"
 
 // ДЛЯ ГРАФИКИ ЮЗАЕМ MATERIAL UI REACT
 
-const App = () => {
-  return (
-    <div className='app'>
-      <BrowserRouter>
-        <NavBar />
-        <AppRouter />
-      </BrowserRouter>
-    </div>
-  )
-}
+const App = () => (
+    <>
+        <BrowserRouter>
+            <GlobalTheme />
+            <NavBar />
+            <AppRouter />
+        </BrowserRouter>
+    </>
+)
 
 export default styled(App)`
     margin: 0;

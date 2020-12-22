@@ -17,7 +17,6 @@ import user from "../../store/user";
 const Main = observer(() => {
   useEffect(() => {
       goods.fetchGoods()
-    // canban.fetchOrders()
   }, [])
 
     const componentFromRole = () => {

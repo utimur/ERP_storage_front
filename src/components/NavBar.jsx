@@ -38,9 +38,11 @@ const NavBar = observer(() => {
             </NavLink>
           </Grid>
           : <Grid container direction="row" justify="space-between">
-              <Button style={{color:"white"}}  variant='text' onClick={() => app.showGoodDialog()}>
-                Добавить товар
-              </Button>
+              {user.role === 'admin' ? (
+                  <Button style={{color:"white"}}  variant='text' onClick={() => app.showGoodDialog()}>
+                    Добавить товар
+                  </Button>
+              ) : <span/> }
                 <Button onClick={() => user.logout()} color='inherit'>Выйти</Button>
             </Grid>}
         {app.loader && <LinearProgress color="secondary" />}
