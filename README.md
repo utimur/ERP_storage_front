@@ -10,15 +10,15 @@
 
 - For Linux or macOS:
 
-        REACT_APP_API_PREFIX='http://some_addr:some_port' npm start
+        REACT_APP_ENV='development' npm start
 
 - For Windows (cmd.exe):
 
-        set "REACT_APP_API_PREFIX=http://some_addr:some_port" && npm start
+        set "REACT_APP_ENV=development" && npm start
 
 - For Windows (Powershell):
 
-        ($env:REACT_APP_API_PREFIX = "http://some_addr:some_port") -and (npm start)
+        ($env:REACT_APP_ENV = "development") -and (npm start)
 
 ## Code formatting
 
