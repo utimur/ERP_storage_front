@@ -8,12 +8,11 @@ export class StoreFactory {
     this._repoFactory = repositoryFactory
   }
 
-  createUserStore (tokenStore, userBoundStoresClearHandler) {
+  createUserStore (tokenStore) {
     return new UserStore(
       this._repoFactory.createAuthRepository(),
       this._repoFactory.createUserRepository(),
-      tokenStore,
-      userBoundStoresClearHandler
+      tokenStore
     )
   }
 

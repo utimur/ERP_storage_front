@@ -1,11 +1,14 @@
 import styled from 'styled-components'
 import NavBar from './NavBar'
 import AppRouter from './AppRouter'
+import { GoodDialogContainer } from '../containers'
 
 const App = ({ className }) => (
   <div className={className}>
-    <NavBar />
-    <AppRouter />
+    <GoodDialogContainer>
+      <NavBar />
+      <AppRouter />
+    </GoodDialogContainer>
   </div>
 )
 

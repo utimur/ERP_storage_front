@@ -14,7 +14,7 @@ class OrderStore {
   async init (filter) {
     const { data } = await this._orderRepo.get(filter)
     const orders = {}
-    data.forEach(o => orders[o.id] = o)
+    data.forEach(o => { orders[o.id] = o })
     this._orders = orders
   }
 

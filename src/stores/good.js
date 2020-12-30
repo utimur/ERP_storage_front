@@ -14,7 +14,7 @@ class GoodStore {
   async init (filter) {
     const { data } = await this._goodRepo.get(filter)
     const goods = {}
-    data.forEach(g => goods[g.id] = g)
+    data.forEach(g => { goods[g.id] = g })
     this._goods = goods
   }
 

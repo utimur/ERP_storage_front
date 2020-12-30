@@ -1,23 +1,22 @@
-import React from 'react'
-import { generateOrderUID } from '../../../utils/orderUIDGenerator'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Dialog from '@material-ui/core/Dialog'
 import {
-  Divider,
+  Box,
+  Dialog,
+  DialogContent,
+  DialogTitle, Divider,
   Grid,
-  Typography
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow, Typography
 } from '@material-ui/core'
-import DialogContent from '@material-ui/core/DialogContent'
-import Box from '@material-ui/core/Box'
-import TableContainer from '@material-ui/core/TableContainer'
-import Table from '@material-ui/core/Table'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import TableCell from '@material-ui/core/TableCell'
-import TableBody from '@material-ui/core/TableBody'
 import { observer } from 'mobx-react-lite'
+import React, { useContext } from 'react'
+import { CanbanContext } from '../../../contexts'
 import { statusToLabel } from '../../../utils/consts'
 import { selectDate } from '../../../utils/dateSelector'
+import { generateOrderUID } from '../../../utils/orderUIDGenerator'
 
 const OrderInfoData = observer(({ orderInfoStore }) => (
   <>
@@ -88,28 +87,34 @@ const OrderInfoData = observer(({ orderInfoStore }) => (
   </>
 ))
 
-const OrderInfoDialog = observer(({ orderInfoStore }) => (
-  <Dialog
-    open={orderInfoStore.IsReady}
-    onClose={() => orderInfoStore.clear()}
-    fullWidth
-  >
-    {orderInfoStore.IsReady ? (
-      <>
-        <DialogTitle>
-          <Grid container alignItems='center' justify='space-between'>
-            <Typography variant='h6'>
-              {`Заказ #${generateOrderUID(orderInfoStore.Order.user_id, orderInfoStore.Order.id)}`}
-            </Typography>
-          </Grid>
-        </DialogTitle>
-        <Divider />
-        <DialogContent>
-          <OrderInfoData orderInfoStore={orderInfoStore} />
-        </DialogContent>
-      </>
-    ) : null}
-  </Dialog>
-))
+const OrderInfoDialog = observer(() => {
+  const {
+    dependencies: { orderInfoStore }
+  } = useContext(CanbanContext)
+
+  return (
+    <Dialog
+      open={orderInfoStore.IsReady}
+      onClose={() => orderInfoStore.clear()}
+      fullWidth
+    >
+      {orderInfoStore.IsReady ? (
+        <>
+          <DialogTitle>
+            <Grid container alignItems='center' justify='space-between'>
+              <Typography variant='h6'>
+                {`Заказ #${generateOrderUID(orderInfoStore.Order.user_id, orderInfoStore.Order.id)}`}
+              </Typography>
+            </Grid>
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            <OrderInfoData orderInfoStore={orderInfoStore} />
+          </DialogContent>
+        </>
+      ) : null}
+    </Dialog>
+  )
+})
 
 export default OrderInfoDialog

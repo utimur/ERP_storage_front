@@ -14,14 +14,13 @@ class UserStore {
     return this._role !== null
   }
 
-  constructor (authRepo, userRepo, tokenStore, userBoundStoresClearHandler) {
+  constructor (authRepo, userRepo, tokenStore) {
     this._id = null
     this._role = null
     makeAutoObservable(this)
     this._tokenStore = tokenStore
     this._authRepo = authRepo
     this._userRepo = userRepo
-    this._userBoundStoresClearHandler = userBoundStoresClearHandler
 
     const token = this._tokenStore.get()
     if (token !== null) {
@@ -34,7 +33,7 @@ class UserStore {
   }
 
   logout () {
-    this._userBoundStoresClearHandler()
+    this._tokenStore.clear()
   }
 
   async login (username, password) {

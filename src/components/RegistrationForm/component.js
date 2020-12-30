@@ -1,15 +1,25 @@
 import React, { useContext } from 'react'
-import { Button, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@material-ui/core'
+import {
+  Button,
+  CardContent,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography
+} from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import Card from '@material-ui/core/Card'
 import { observer } from 'mobx-react-lite'
 import AuthFields from '../AuthFields'
-import DependenciesContext from '../DependenciesContext'
+import { RegistrationFormContext, GlobalDependenciesContext } from '../../contexts'
 import ContentContainer from '../ContentContainer'
 import roleList from './roleList'
 
-const RegistrationForm = ({ formStore }) => {
-  const { userStore } = useContext(DependenciesContext)
+const RegistrationForm = () => {
+  const { dependencies: { userStore } } = useContext(GlobalDependenciesContext)
+  const { dependencies: { formStore } } = useContext(RegistrationFormContext)
 
   const handleClick = e => {
     e.preventDefault()
@@ -43,7 +53,7 @@ const RegistrationForm = ({ formStore }) => {
                       labelId='demo-simple-select-outlined-label'
                       id='demo-simple-select-outlined'
                       value={formStore.Role}
-                      onChange={e => formStore.Role = e.target.value}
+                      onChange={e => { formStore.Role = e.target.value }}
                       label='Роль'
                     >
                       {roleList.map(e => <MenuItem key={e.value} value={e.value}>{e.label}</MenuItem>)}

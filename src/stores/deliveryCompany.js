@@ -14,7 +14,7 @@ class DeliveryCompanyStore {
   async init () {
     const { data } = await this._deliveryCompanyRepo.get()
     const companies = {}
-    data.forEach(o => companies[o.id] = o)
+    data.forEach(o => { companies[o.id] = o })
     this._deliveryCompanies = companies
   }
 

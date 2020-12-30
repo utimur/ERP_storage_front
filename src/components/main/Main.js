@@ -1,22 +1,19 @@
 import React, { useContext } from 'react'
 import { Grid } from '@material-ui/core'
-import { employees, roles } from '../../utils/consts'
+import { employees } from '../../utils/consts'
 import { observer } from 'mobx-react-lite'
-import GoodDialog from './GoodDialog'
-import FeedContainer from './Feed/components'
+import GoodDialog from './GoodDialog/component'
+import Feed from './Feed'
 import ContentContainer from '../ContentContainer'
-import DependenciesContext from '../DependenciesContext'
-import CanbanContainer from './Canban/container'
+import { GlobalDependenciesContext } from '../../contexts'
+import Canban from './Canban'
 
-const componentFromRole = role => {
-  if (Object.values(employees).includes(role)) {
-    return <FeedContainer />
-  }
-  return <CanbanContainer />
-}
+const componentFromRole = role => (
+  Object.values(employees).includes(role) ? <Feed /> : <Canban />
+)
 
 const Main = observer(() => {
-  const { userStore } = useContext(DependenciesContext)
+  const { dependencies: { userStore } } = useContext(GlobalDependenciesContext)
 
   return (
     <ContentContainer>

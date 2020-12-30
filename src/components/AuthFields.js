@@ -11,8 +11,8 @@ const AuthFields = ({ formStore }) => (
         label='Введите имя пользователя...'
         variant='outlined'
         value={formStore.Username}
-        onChange={e => formStore.Username = e.target.value}
-        error={formStore.UsernameError}
+        onChange={e => { formStore.Username = e.target.value }}
+        error={formStore.Errors.username}
       />
     </Box>
     <Box mt={2}>
@@ -22,8 +22,8 @@ const AuthFields = ({ formStore }) => (
         label='Введите пароль...'
         variant='outlined'
         value={formStore.Password}
-        onChange={e => formStore.Password = e.target.value}
-        error={formStore.PasswordError}
+        onChange={e => { formStore.Password = e.target.value }}
+        error={formStore.Errors.password}
       />
     </Box>
   </>

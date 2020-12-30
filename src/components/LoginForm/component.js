@@ -1,14 +1,15 @@
-import React, { useContext } from 'react'
-import Card from '@material-ui/core/Card'
 import { Button, CardContent, Grid, Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
+import Card from '@material-ui/core/Card'
 import { observer } from 'mobx-react-lite'
+import React, { useContext } from 'react'
+import { LoginFormContext, GlobalDependenciesContext } from '../../contexts'
 import AuthFields from '../AuthFields'
-import DependenciesContext from '../DependenciesContext'
 import ContentContainer from '../ContentContainer'
 
-const LoginForm = ({ formStore }) => {
-  const { userStore } = useContext(DependenciesContext)
+const LoginForm = () => {
+  const { dependencies: { userStore } } = useContext(GlobalDependenciesContext)
+  const { dependencies: { formStore } } = useContext(LoginFormContext)
 
   const handleClick = e => {
     e.preventDefault()

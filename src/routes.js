@@ -1,16 +1,16 @@
 import { routes } from './utils/consts'
 import Main from './components/main/Main'
-import LoginFormContainer from './components/LoginForm/container'
-import RegistrationFormContainer from './components/RegistrationForm/container'
+import RegistrationForm from './components/RegistrationForm'
+import LoginForm from './components/LoginForm'
 
 export const publicRoutes = [
   {
     path: routes.REGISTRATION_ROUTE,
-    Component: RegistrationFormContainer
+    Component: RegistrationForm
   },
   {
     path: routes.LOGIN_ROUTE,
-    Component: LoginFormContainer
+    Component: LoginForm
   }
 ]
 

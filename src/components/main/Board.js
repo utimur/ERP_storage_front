@@ -1,11 +1,15 @@
-import React from 'react'
-import Card from '@material-ui/core/Card'
-import { CardContent, Icon, Typography } from '@material-ui/core'
-import Grid from '@material-ui/core/Grid'
-import Order from '../Order'
+import {
+  Card,
+  CardContent,
+  Grid,
+  Icon,
+  Typography
+} from '@material-ui/core'
 import { observer } from 'mobx-react-lite'
-import { statuses, statusToLabel } from '../../../utils/consts'
+import React from 'react'
 import styled from 'styled-components'
+import { statuses, statusToLabel } from '../../utils/consts'
+import Order from './Order'
 
 // Необходимо сделать 2 исправления - (загрузка заказов: 45, изменение статуса: 34)
 

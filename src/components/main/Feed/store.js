@@ -43,12 +43,12 @@ class FeedStore {
   }
 
   async acceptCard () {
-    const [_, status] = statusesLRMapping[employeeToStatus[this._userStore.Role]]
+    const [, status] = statusesLRMapping[employeeToStatus[this._userStore.Role]]
     await this._updateFrontCardStatus(status)
   }
 
   async declineCard () {
-    const [status, _] = statusesLRMapping[employeeToStatus[this._userStore.Role]]
+    const [status] = statusesLRMapping[employeeToStatus[this._userStore.Role]]
     await this._updateFrontCardStatus(status)
   }
 

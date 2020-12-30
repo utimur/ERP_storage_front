@@ -1,14 +1,14 @@
 class TokenStore {
   set (token) {
-    localStorage.setItem('token', token)
+    window.localStorage.setItem('token', token)
   }
 
   get () {
-    return localStorage.getItem('token')
+    return window.localStorage.getItem('token')
   }
 
   clear () {
-    localStorage.removeItem('token')
+    window.localStorage.removeItem('token')
   }
 }
 

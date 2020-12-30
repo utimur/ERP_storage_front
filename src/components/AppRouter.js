@@ -1,12 +1,12 @@
+import { observer } from 'mobx-react-lite'
 import React, { useContext } from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import { GlobalDependenciesContext } from '../contexts'
 import { privateRoutes, publicRoutes } from '../routes'
 import { routes } from '../utils/consts'
-import { observer } from 'mobx-react-lite'
-import DependenciesContext from './DependenciesContext'
 
 const AppRouter = observer(() => {
-  const { userStore } = useContext(DependenciesContext)
+  const { dependencies: { userStore } } = useContext(GlobalDependenciesContext)
 
   return !userStore.IsAuthorized ? (
     <Switch>

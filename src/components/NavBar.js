@@ -5,10 +5,10 @@ import Button from '@material-ui/core/Button'
 import { observer } from 'mobx-react-lite'
 import Grid from '@material-ui/core/Grid'
 import { NavLink } from 'react-router-dom'
-import { routes, roles } from '../utils/consts'
+import { roles, routes } from '../utils/consts'
 import app from '../stores/app'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import DependenciesContext from './DependenciesContext'
+import { GlobalDependenciesContext, GoodDialogContext } from '../contexts'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,8 +24,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const NavBar = observer(() => {
-  const { userStore } = useContext(DependenciesContext)
+  const { dependencies: { userStore }, resetDependencies } = useContext(GlobalDependenciesContext)
+  const { dependencies: { goodDialogStore } } = useContext(GoodDialogContext)
   const classes = useStyles()
+
+  const handleLogout = () => {
+    userStore.logout()
+    resetDependencies()
+  }
 
   return (
     <AppBar className={classes.root}>
@@ -42,11 +48,11 @@ const NavBar = observer(() => {
         ) : (
           <Grid container direction='row' justify='space-between'>
             {userStore.Role === roles.ADMIN ? (
-              <Button style={{ color: 'white' }} variant='text' onClick={() => app.showGoodDialog()}>
-                Добавить товар
+              <Button style={{ color: 'white' }} variant='text' onClick={() => goodDialogStore.toggleVisibility()}>
+                Добавить складскую единицу
               </Button>
             ) : <span />}
-            <Button onClick={() => userStore.logout()} color='inherit'>Выйти</Button>
+            <Button onClick={handleLogout} color='inherit'>Выйти</Button>
           </Grid>
         )}
         {app.loader && <LinearProgress color='secondary' />}

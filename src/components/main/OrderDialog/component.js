@@ -1,7 +1,3 @@
-import React from 'react'
-import { observer } from 'mobx-react-lite'
-import Dialog from '@material-ui/core/Dialog'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import {
   Divider,
   FormControl,
@@ -11,20 +7,24 @@ import {
   Select,
   Typography
 } from '@material-ui/core'
-import DialogContent from '@material-ui/core/DialogContent'
 import Box from '@material-ui/core/Box'
-import TableContainer from '@material-ui/core/TableContainer'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
 import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import TableCell from '@material-ui/core/TableCell'
-import TableBody from '@material-ui/core/TableBody'
-import DialogActions from '@material-ui/core/DialogActions'
-import Button from '@material-ui/core/Button'
-import TextField from '../../TextField'
 import { Alert } from '@material-ui/lab'
+import { observer } from 'mobx-react-lite'
+import React, { useContext, useEffect } from 'react'
+import { CanbanContext } from '../../../contexts'
 import { selectDate } from '../../../utils/dateSelector'
-import roleList from '../../RegistrationForm/roleList'
+import TextField from '../../TextField'
 
 /*
 
@@ -49,7 +49,7 @@ const DeliveryCompanyDropdownList = ({ orderDialogStore }) => (
       id='demo-simple-select-outlined'
       disabled={orderDialogStore.IsReadonly}
       value={orderDialogStore.DeliveryCompanyId}
-      onChange={e => orderDialogStore.DeliveryCompanyId = e.target.value}
+      onChange={e => { orderDialogStore.DeliveryCompanyId = e.target.value }}
       label='Служба доставки'
     >
       {orderDialogStore.DeliveryCompanies.map(c => (
@@ -112,7 +112,7 @@ const OrderForm = observer(({ orderDialogStore }) => (
         error={orderDialogStore.Errors.deliveryExpectedAt}
         variant='outlined'
         value={selectDate(orderDialogStore.DeliveryExpectedAt)}
-        onChange={e => orderDialogStore.DeliveryExpectedAt = e.target.value}
+        onChange={e => { orderDialogStore.DeliveryExpectedAt = e.target.value }}
       />
     </Grid>
     <Grid item xs={12}>
@@ -124,35 +124,45 @@ const OrderForm = observer(({ orderDialogStore }) => (
   </Grid>
 ))
 
-const OrderDialog = ({ orderDialogStore }) => (
-  <Dialog
-    open={orderDialogStore.IsVisible}
-    onClose={() => orderDialogStore.toggleVisibility()}
-    fullWidth
-  >
-    <DialogTitle>
-      <Grid container alignItems='center' justify='space-between'>
-        <Typography variant='h6'>Новый заказ</Typography>
-      </Grid>
-    </DialogTitle>
-    <Divider />
-    <DialogContent>
-      <OrderForm orderDialogStore={orderDialogStore} />
-    </DialogContent>
-    <DialogActions>
-      <Grid container justify='flex-end' style={{ marginRight: 15, marginBottom: 10 }}>
-        <Button
-          onClick={() => orderDialogStore.create()}
-          style={{ marginTop: 10 }}
-          disabled={!orderDialogStore.CanCreate}
-          color='primary'
-          variant='outlined'
-        >
-          Создать заказ
-        </Button>
-      </Grid>
-    </DialogActions>
-  </Dialog>
-)
+const OrderDialog = () => {
+  const {
+    dependencies: { orderDialogStore }
+  } = useContext(CanbanContext)
+
+  useEffect(() => {
+    orderDialogStore.init()
+  }, [orderDialogStore])
+
+  return (
+    <Dialog
+      open={orderDialogStore.IsVisible}
+      onClose={() => orderDialogStore.toggleVisibility()}
+      fullWidth
+    >
+      <DialogTitle>
+        <Grid container alignItems='center' justify='space-between'>
+          <Typography variant='h6'>Новый заказ</Typography>
+        </Grid>
+      </DialogTitle>
+      <Divider />
+      <DialogContent>
+        <OrderForm orderDialogStore={orderDialogStore} />
+      </DialogContent>
+      <DialogActions>
+        <Grid container justify='flex-end' style={{ marginRight: 15, marginBottom: 10 }}>
+          <Button
+            onClick={() => orderDialogStore.create()}
+            style={{ marginTop: 10 }}
+            disabled={!orderDialogStore.CanCreate}
+            color='primary'
+            variant='outlined'
+          >
+            Создать
+          </Button>
+        </Grid>
+      </DialogActions>
+    </Dialog>
+  )
+}
 
 export default observer(OrderDialog)

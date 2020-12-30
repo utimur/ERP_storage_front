@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useRef } from 'react'
-import styled from 'styled-components'
-import { Check, Close } from '@material-ui/icons'
 import { Box } from '@material-ui/core'
+import { Check, Close } from '@material-ui/icons'
+import { Alert, AlertTitle } from '@material-ui/lab'
+import { observer } from 'mobx-react-lite'
+import React, { useContext, useEffect } from 'react'
+import styled from 'styled-components'
+import { FeedContext, GlobalDependenciesContext } from '../../../contexts'
 import { FrontCardWrapper } from './Cards/CardWrappers'
 import { employeeCardFactory } from './employeeCardFactory'
-import FeedStore from './store'
-import { observer } from 'mobx-react-lite'
-import { Alert, AlertTitle } from '@material-ui/lab'
-import DependenciesContext from '../../DependenciesContext'
-import { toJS } from 'mobx'
 
 const FeedCards = observer(({ className, employee, feed }) => {
   const CardCls = employeeCardFactory(employee)
@@ -58,14 +56,14 @@ const ButtonBar = observer(({ className, feed }) => {
   return (
     <div className={className}>
       <CircleButton
-        onClick={feed.declineCard}
+        onClick={() => feed.declineCard()}
       >
         <Box color='error.main'>
           <Close />
         </Box>
       </CircleButton>
       <CircleButton
-        onClick={feed.acceptCard}
+        onClick={() => feed.acceptCard()}
       >
         <Box color='success.main'>
           <Check />
@@ -81,12 +79,27 @@ const StyledButtonBar = styled(ButtonBar)`
     margin-top: 90vh;
 `
 
-const Feed = styled(observer(({ className, employee, feed }) => {
-  return (
+const Feed = styled(observer(({ className }) => {
+  const { dependencies: { userStore } } = useContext(GlobalDependenciesContext)
+  const { dependencies: { feedStore } } = useContext(FeedContext)
+  useEffect(() => {
+    feedStore.init()
+  }, [feedStore])
+
+  if (!feedStore.IsReady) {
+    return null
+  }
+
+  return !feedStore.IsEmpty ? (
     <div className={className}>
-      <StyledFeedCards employee={employee} feed={feed} />
-      <StyledButtonBar feed={feed} />
+      <StyledFeedCards employee={userStore.Role} feed={feedStore} />
+      <StyledButtonBar feed={feedStore} />
     </div>
+  ) : (
+    <Alert severity='info' style={{ height: 'fit-content', width: '100%' }}>
+      <AlertTitle>Нет заказов</AlertTitle>
+      В данный момент заказов нет. <strong>Проверьте позже!</strong>
+    </Alert>
   )
 }))`
     width: 100%;
@@ -98,25 +111,4 @@ const Feed = styled(observer(({ className, employee, feed }) => {
     flex-direction: column;
 `
 
-const FeedContainer = observer(({ employee }) => {
-  const { userStore, orderStore } = useContext(DependenciesContext)
-  const feedRef = useRef(new FeedStore(userStore, orderStore))
-  useEffect(() => { feedRef.current.init() }, [feedRef])
-
-  const feed = feedRef.current
-
-  if (!feed.IsReady) {
-    return null
-  }
-
-  return !feed.IsEmpty ? (
-    <Feed employee={employee} feed={feed} />
-  ) : (
-    <Alert severity='info' style={{ height: 'fit-content', width: '100%' }}>
-      <AlertTitle>Нет заказов</AlertTitle>
-      В данный момент заказов нет. <strong>Проверьте позже!</strong>
-    </Alert>
-  )
-})
-
-export default FeedContainer
+export default Feed
